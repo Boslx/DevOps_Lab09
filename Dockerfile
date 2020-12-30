@@ -6,9 +6,9 @@ ENV LANG="en_US.UTF-8" \
     TERM="xterm"
 
 RUN apk --no-cache --update-cache add \
-      nginx \
-	  supervisor \
-      && \
+    nginx \
+    supervisor \
+    && \
     mkdir -p /data/logs/supervisor && \
     rm -rf /tmp/* && \
     rm -rf /var/cache/apk/*
@@ -21,6 +21,6 @@ RUN chmod u+x  /nginx/start.sh && \
 
 WORKDIR /nginx/nginx_config
 
-EXPOSE 80
+EXPOSE 8080
 
 CMD ["/nginx/start.sh"]

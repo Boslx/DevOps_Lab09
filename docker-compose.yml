@@ -1,9 +1,9 @@
-version: '3'
+version: "3"
 services:
   nginx:
     container_name: NginxServer
     build: .
     volumes:
-      - './site:/nginx/nginx_config/site'
+      - "./site:/nginx/nginx_config/site"
     ports:
-      - '81:80'
+      - "8080"
