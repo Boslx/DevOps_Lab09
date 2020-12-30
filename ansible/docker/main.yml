@@ -38,16 +38,15 @@
       pip:
         name: docker
 
-    - name: Pull default Docker image
-      docker_image:
-        name: "{{ default_container_image }}"
-        source: pull
-
-    # Creates the number of containers defined by the variable create_containers, using values from vars file
-    - name: Create default containers
-      docker_container:
-        name: "{{ default_container_name }}{{ item }}"
-        image: "{{ default_container_image }}"
-        command: "{{ default_container_command }}"
-        state: present
-      with_sequence: count={{ create_containers }}
+    # Creates the container defined in the docker-compose.yml
+    - name: Create container
+      community.general.docker_compose:
+        name: "devops"
+        definition:
+          nginx:
+            container_name: NginxServer
+            build: .
+            volumes:
+              - "./website:/usr/share/nginx/html"
+            ports:
+              - "80:80"
