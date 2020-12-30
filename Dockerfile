@@ -1,26 +1,9 @@
-FROM alpine:edge
+FROM library/alpine:latest
 
-ENV LANG="en_US.UTF-8" \
-    LC_ALL="C.UTF-8" \
-    LANGUAGE="en_US.UTF-8" \
-    TERM="xterm"
+RUN apk add --update nginx && rm -rf /var/cache/apk/*
+RUN mkdir -p /tmp/nginx/client-body
+COPY nginx.conf /etc/nginx/nginx.conf
+COPY default.conf /etc/nginx/conf.d/default.conf
+COPY website /usr/share/nginx/html
 
-RUN apk --no-cache --update-cache add \
-    nginx \
-    supervisor \
-    && \
-    mkdir -p /data/logs/supervisor && \
-    rm -rf /tmp/* && \
-    rm -rf /var/cache/apk/*
-
-ADD ./files /nginx
-
-RUN chmod u+x  /nginx/start.sh && \
-    ln -sf /dev/stdout /var/log/nginx/access.log && \
-    ln -sf /dev/stderr /var/log/nginx/error.log
-
-WORKDIR /nginx/nginx_config
-
-EXPOSE 8080
-
-CMD ["/nginx/start.sh"]
+CMD ["nginx", "-g", "daemon off;"]

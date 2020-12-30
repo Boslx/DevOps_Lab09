@@ -4,6 +4,6 @@ services:
     container_name: NginxServer
     build: .
     volumes:
-      - "./site:/nginx/nginx_config/site"
+      - "./website:/usr/share/nginx/html"
     ports:
       - "8080"
